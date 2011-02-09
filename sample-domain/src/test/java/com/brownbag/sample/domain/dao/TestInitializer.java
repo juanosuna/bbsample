@@ -44,7 +44,7 @@ public class TestInitializer {
     @Autowired
     private PersonDao personDao;
 
-    @IfProfileValue(name="initDB", value="true")
+//    @IfProfileValue(name="initDB", value="true")
     @Test
     public void initialize() throws Exception {
 

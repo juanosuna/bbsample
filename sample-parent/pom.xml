@@ -17,7 +17,7 @@
     <repositories>
         <repository>
             <id>jboss-releases</id>
-            <url>https://repository.jboss.org/nexus/content/groups/public-jboss</url>
+            <url>http://repository.jboss.org/nexus/content/groups/public-jboss</url>
         </repository>
 
         <repository>
@@ -30,7 +30,7 @@
     <pluginRepositories>
         <pluginRepository>
             <id>jboss-releases</id>
-            <url>https://repository.jboss.org/nexus/content/groups/public-jboss</url>
+            <url>http://repository.jboss.org/nexus/content/groups/public-jboss</url>
         </pluginRepository>
     </pluginRepositories>
 
