@@ -25,6 +25,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.util.Date;
 
+/**
+ * Entity Person
+ */
 @Entity
 @Table(schema = WritableEntity.SCHEMA)
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "ReadOnly")
