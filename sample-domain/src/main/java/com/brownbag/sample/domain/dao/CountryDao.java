@@ -16,15 +16,8 @@
 package com.brownbag.sample.domain.dao;
 
 import com.brownbag.sample.domain.entity.Country;
-import com.brownbag.sample.domain.entity.Person;
-import com.brownbag.sample.domain.query.PersonQuery;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.Query;
-import java.util.List;
 
 @Repository
 @Transactional

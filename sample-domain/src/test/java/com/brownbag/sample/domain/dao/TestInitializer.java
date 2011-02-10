@@ -21,7 +21,6 @@ import com.brownbag.sample.domain.entity.State;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.IfProfileValue;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
@@ -34,7 +33,7 @@ import java.util.Date;
         "classpath:applicationContext-data-access.xml",
         "classpath:applicationContext-data-init.xml"
 })
-@TransactionConfiguration(transactionManager="transactionManager", defaultRollback=false)
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
 @Transactional
 public class TestInitializer {
 
@@ -44,7 +43,7 @@ public class TestInitializer {
     @Autowired
     private PersonDao personDao;
 
-//    @IfProfileValue(name="initDB", value="true")
+    //    @IfProfileValue(name="initDB", value="true")
     @Test
     public void initialize() throws Exception {
 
@@ -59,7 +58,7 @@ public class TestInitializer {
             Person person = new Person(
                     "firstName" + i,
                     "lastName" + i,
-                     i.toString()
+                    i.toString()
             );
 
             person.setStreet("100 Main St");

@@ -28,8 +28,6 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Runo;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class SampleApplication extends Application {
@@ -38,21 +36,19 @@ public class SampleApplication extends Application {
     @Autowired
     private PersonDao personDao;
 
+    @Autowired
+    private PersonForm personForm;
+
     private Window mainWindow;
     private Panel filterPanel;
     private Panel buttonPanel;
+    private Panel tableDetailPanel;
     private Panel tablePanel;
     private Panel detailPanel;
 
     private PersonQuery personQuery = new PersonQuery();
-
     private Table table;
     private BeanContainer<Long, Person> personContainer;
-
-    private ArrayList<Object> visibleColumnIds = new ArrayList<Object>();
-    private ArrayList<String> visibleColumnLabels = new ArrayList<String>();
-
-    private PersonForm personForm;
 
     @Override
     public void init() {
@@ -61,14 +57,19 @@ public class SampleApplication extends Application {
 
         initLayout();
         initButtonsAndFields();
-        initTable();
+        personContainer = createPersonContainer();
 
-        detailPanel = new Panel();
-        detailPanel.addStyleName(Runo.PANEL_LIGHT);
-        tablePanel.addComponent(detailPanel);
+        table = new PersonTable(personContainer);
+        tablePanel.addComponent(table);
+        table.addListener(Property.ValueChangeEvent.class, this, "rowSelected");
 
-        personContainer = new BeanContainer<Long, Person>(Person.class);
+        detailPanel.addComponent(personForm);
 
+        search();
+    }
+
+    private static BeanContainer<Long, Person> createPersonContainer() {
+        BeanContainer<Long, Person> personContainer = new BeanContainer<Long, Person>(Person.class);
         AbstractBeanContainer.BeanIdResolver<Long, Person> personIdResolver = new AbstractBeanContainer.BeanIdResolver<Long, Person>() {
             @Override
             public Long getIdForBean(Person bean) {
@@ -77,15 +78,7 @@ public class SampleApplication extends Application {
         };
         personContainer.setBeanIdResolver(personIdResolver);
 
-        table.setContainerDataSource(personContainer);
-        table.setVisibleColumns(visibleColumnIds.toArray());
-        table.setColumnHeaders(visibleColumnLabels.toArray(new String[0]));
-
-        BeanItem<Person> personItem = new BeanItem<Person>(new Person());
-        personForm = new PersonForm(personItem);
-        detailPanel.addComponent(personForm);
-
-        search();
+        return personContainer;
     }
 
     private void initLayout() {
@@ -97,19 +90,28 @@ public class SampleApplication extends Application {
         mainLayout.setSpacing(true);
         mainWindow.setContent(mainLayout);
 
-        filterPanel = addHorizontalPanel();
-        buttonPanel = addHorizontalPanel();
-        tablePanel = addHorizontalPanel();
+        filterPanel = createPanel(new HorizontalLayout());
+        mainWindow.addComponent(filterPanel);
+
+        buttonPanel = createPanel(new HorizontalLayout());
+        mainWindow.addComponent(buttonPanel);
+
+        tableDetailPanel = createPanel(new HorizontalLayout());
+        mainWindow.addComponent(tableDetailPanel);
+
+        tablePanel = createPanel(new VerticalLayout());
+        tableDetailPanel.addComponent(tablePanel);
+
+        detailPanel = createPanel(new VerticalLayout());
+        tableDetailPanel.addComponent(detailPanel);
     }
 
-    private Panel addHorizontalPanel() {
+    private static Panel createPanel(AbstractOrderedLayout layout) {
         Panel panel = new Panel();
         panel.addStyleName(Runo.PANEL_LIGHT);
-        HorizontalLayout layout = new HorizontalLayout();
         layout.setMargin(false);
         layout.setSpacing(true);
         panel.setContent(layout);
-        mainWindow.addComponent(panel);
 
         return panel;
     }
@@ -133,33 +135,19 @@ public class SampleApplication extends Application {
         buttonPanel.addComponent(nextButton);
     }
 
-    private void initTable() {
-        String[] columnIds = {"id", "firstName", "lastName", "city", "country"};
-        visibleColumnIds.addAll(Arrays.asList(columnIds));
+    // listener methods
 
-        String[] columnLabels = {"Person Id", "First Name", "Last Name", "City", "Country"};
-        visibleColumnLabels.addAll(Arrays.asList(columnLabels));
+    public void rowSelected(Property.ValueChangeEvent event) {
+        if (event.getProperty().getValue() == null) {
+            personForm.setVisible(false);
+            return;
+        }
 
-        table = new Table();
-        tablePanel.addComponent(table);
-
-        table.setCaption("Results");
-        table.setPageLength(10);
-        table.setSelectable(true);
-
-        table.setImmediate(true);
-        table.addListener(new Property.ValueChangeListener() {
-            public void valueChange(Property.ValueChangeEvent event) {
-                rowSelected();
-            }
-        });
-        table.addListener(Property.ValueChangeListener.class, this, "rowSelected");
-    }
-
-    public void rowSelected() {
         Object itemId = table.getValue();
         BeanItem<Person> personItem = personContainer.getItem(itemId);
+
         personForm.setItemDataSource(personItem);
+        personForm.setVisible(true);
     }
 
     public void search() {

@@ -2,57 +2,61 @@ package com.brownbag.sample;
 
 import com.brownbag.sample.domain.dao.CountryDao;
 import com.brownbag.sample.domain.entity.Country;
-import com.brownbag.sample.domain.entity.Person;
-import com.brownbag.sample.util.SpringApplicationContext;
 import com.vaadin.data.Item;
-import com.vaadin.data.util.AbstractBeanContainer;
-import com.vaadin.data.util.BeanContainer;
-import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.BaseTheme;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: Juan
  * Date: 2/8/11
  * Time: 7:52 PM
  */
+@org.springframework.stereotype.Component
+@Scope("session")
 public class PersonForm extends Form {
 
-    private GridLayout gridLayout;
-    private PersonFieldFactory personFieldFactory;
+    @Autowired
+    private CountryDao countryDao;
 
-    public PersonForm(BeanItem<Person> personItem) {
+    private GridLayout gridLayout;
+
+    public PersonForm() {
         super();
+        setVisible(false);
         setCaption("Personal Details");
 
-        gridLayout = new GridLayout(3, 3);
-
+        gridLayout = new GridLayout(2, 3);
         gridLayout.setMargin(true, false, false, true);
         gridLayout.setSpacing(true);
-
         setLayout(gridLayout);
 
         setWriteThrough(false); // we want explicit 'apply'
-        setInvalidCommitted(false); // no invalid values in datamodel
+        setInvalidCommitted(false); // no invalid values in data model
 
-        // FieldFactory for customizing the fields and adding validators
-        personFieldFactory = new PersonFieldFactory();
-        setFormFieldFactory(personFieldFactory);
-        setItemDataSource(personItem); // bind to POJO via BeanItem
-
-        // Determines which properties are shown, and in which order:
-        setVisibleItemProperties(Arrays.asList(new String[]{"firstName",
-                "lastName", "city", "country", "socialSecurityNumber", "birthDate"}));
+        setFormFieldFactory(new PersonFieldFactory());
 
         initButtons();
+    }
+
+    @Override
+    public void setItemDataSource(Item newDataSource) {
+        super.setItemDataSource(newDataSource,
+                Arrays.asList("firstName", "lastName", "city", "country", "socialSecurityNumber", "birthDate")
+        );
     }
 
     private void initButtons() {
         HorizontalLayout buttons = new HorizontalLayout();
         buttons.setSpacing(true);
+
         Button discardChanges = new Button("Discard Changes",
                 new Button.ClickListener() {
                     public void buttonClick(Button.ClickEvent event) {
@@ -83,33 +87,49 @@ public class PersonForm extends Form {
         if (propertyId.equals("firstName")) {
             gridLayout.addComponent(field, 0, 0);
         } else if (propertyId.equals("lastName")) {
-            gridLayout.addComponent(field, 1, 0, 2, 0);
+            gridLayout.addComponent(field, 1, 0);
         } else if (propertyId.equals("city")) {
-            gridLayout.addComponent(field, 0, 1, 2, 1);
+            gridLayout.addComponent(field, 0, 1);
         } else if (propertyId.equals("country")) {
-            gridLayout.addComponent(field, 0, 2);
+            gridLayout.addComponent(field, 1, 1);
         } else if (propertyId.equals("socialSecurityNumber")) {
-            gridLayout.addComponent(field, 1, 2);
+            gridLayout.addComponent(field, 0, 2);
         } else if (propertyId.equals("birthDate")) {
-            gridLayout.addComponent(field, 2, 2);
+            gridLayout.addComponent(field, 1, 2);
         }
     }
 
     private class PersonFieldFactory extends DefaultFieldFactory {
 
-        final ComboBox countries = new ComboBox("Country");
+        private Map<Object, Field> fields = new HashMap<Object, Field>();
 
-        public PersonFieldFactory() {
-            BeanContainer<String, Country> countryContainer = new BeanContainer<String, Country>(Country.class);
-            AbstractBeanContainer.BeanIdResolver<String, Country> countryIdResolver = new AbstractBeanContainer.BeanIdResolver<String, Country>() {
-                @Override
-                public String getIdForBean(Country bean) {
-                    return bean.getId();
-                }
-            };
-            countryContainer.setBeanIdResolver(countryIdResolver);
+        @Override
+        public Field createField(Item item, Object propertyId, Component uiContext) {
 
-            CountryDao countryDao = (CountryDao) SpringApplicationContext.getBean("countryDao");
+            if (!fields.containsKey(propertyId)) {
+                Field field = createFieldImpl(item, propertyId, uiContext);
+                fields.put(propertyId, field);
+            }
+
+            return fields.get(propertyId);
+        }
+
+        private Field createFieldImpl(Item item, Object propertyId,
+                                      Component uiContext) {
+            Field field;
+            if ("country".equals(propertyId)) {
+                return createCountriesCombo();
+            } else {
+                field = super.createField(item, propertyId, uiContext);
+            }
+
+            return field;
+        }
+
+        private ComboBox createCountriesCombo() {
+            ComboBox countries = new ComboBox("Country");
+
+            BeanItemContainer<Country> countryContainer = new BeanItemContainer<Country>(Country.class);
             List<Country> countryList = countryDao.findAll();
             countryContainer.addAll(countryList);
 
@@ -118,21 +138,8 @@ public class PersonForm extends Form {
             countries.setNullSelectionAllowed(false);
             countries.setItemCaptionMode(Select.ITEM_CAPTION_MODE_PROPERTY);
             countries.setItemCaptionPropertyId("name");
-        }
 
-        @Override
-        public Field createField(Item item, Object propertyId,
-                                 Component uiContext) {
-            Field field;
-            if ("country".equals(propertyId)) {
-                return countries;
-            } else {
-                // Use the super class to create a suitable field base on the
-                // property type.
-                field = super.createField(item, propertyId, uiContext);
-            }
-
-            return field;
+            return countries;
         }
     }
 }

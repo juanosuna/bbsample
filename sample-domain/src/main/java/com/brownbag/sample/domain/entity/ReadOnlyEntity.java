@@ -15,12 +15,8 @@
  */
 package com.brownbag.sample.domain.entity;
 
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Version;
-import java.io.Serializable;
-import java.util.UUID;
 
 @MappedSuperclass
 public abstract class ReadOnlyEntity implements Entity {

@@ -15,8 +15,10 @@
  */
 package com.brownbag.sample.domain.entity;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Version;
 import java.util.UUID;
 
 @MappedSuperclass

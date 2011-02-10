@@ -15,8 +15,6 @@
  */
 package com.brownbag.sample.domain.query;
 
-import com.brownbag.sample.domain.entity.State;
-
 /**
  * User: Juan
  * Date: 2/8/11
