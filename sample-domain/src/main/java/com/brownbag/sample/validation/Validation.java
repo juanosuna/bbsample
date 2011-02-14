@@ -15,13 +15,30 @@
  * from Brown Bag Consulting LLC.
  */
 
-package com.brownbag.sample.util;
+package com.brownbag.sample.validation;
 
-public class DefaultSystemProperties {
+import org.springframework.stereotype.Service;
 
-    public void initialize() {
-        if (System.getProperty("DB") == null) {
-            System.setProperty("DB", "h2");
-        }
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import java.util.Set;
+
+/**
+ * User: Juan
+ * Date: 2/13/11
+ * Time: 10:36 PM
+ */
+@Service
+public class Validation<T> {
+    private Validator validator;
+
+    public Validation() {
+        ValidatorFactory factory = javax.validation.Validation.buildDefaultValidatorFactory();
+        validator = factory.getValidator();
+    }
+
+    public <T> Set<ConstraintViolation<T>> validate(T object, Class<?>... groups) {
+        return validator.validate(object, groups);
     }
 }

@@ -18,10 +18,21 @@
 package com.brownbag.sample.domain.dao;
 
 import com.brownbag.sample.domain.entity.Country;
+import com.brownbag.sample.domain.entity.State;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Query;
+import java.util.List;
+
 @Repository
 @Transactional
-public class CountryDao extends GenericDao<Country, String> {
+public class StateDao extends GenericDao<State, String> {
+    public List<State> findByCountry(Country country) {
+        Query query = getEntityManager().createQuery("SELECT s FROM State s WHERE s.country = :country");
+        query.setParameter("country", country);
+        query.setHint("org.hibernate.cacheable", true);
+
+        return query.getResultList();
+    }
 }

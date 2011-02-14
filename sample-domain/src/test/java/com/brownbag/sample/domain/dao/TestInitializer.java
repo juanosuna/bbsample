@@ -1,20 +1,23 @@
 /*
- * Copyright 2011 Brown Bag Consulting LLC
+ * BROWN BAG CONFIDENTIAL
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Brown Bag Consulting LLC
+ * Copyright (c) 2011. All Rights Reserved.
  *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * NOTICE:  All information contained herein is, and remains
+ * the property of Brown Bag Consulting LLC and its suppliers,
+ * if any.  The intellectual and technical concepts contained
+ * herein are proprietary to Brown Bag Consulting LLC
+ * and its suppliers and may be covered by U.S. and Foreign Patents,
+ * patents in process, and are protected by trade secret or copyright law.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Brown Bag Consulting LLC.
  */
+
 package com.brownbag.sample.domain.dao;
 
+import com.brownbag.sample.domain.entity.Address;
 import com.brownbag.sample.domain.entity.Country;
 import com.brownbag.sample.domain.entity.Person;
 import com.brownbag.sample.domain.entity.State;
@@ -26,6 +29,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
 import java.util.Date;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -38,7 +42,10 @@ import java.util.Date;
 public class TestInitializer {
 
     @Autowired
-    private GenericDao genericDao;
+    private StateDao stateDao;
+
+    @Autowired
+    private CountryDao countryDao;
 
     @Autowired
     private PersonDao personDao;
@@ -47,44 +54,83 @@ public class TestInitializer {
     @Test
     public void initialize() throws Exception {
 
-        initializeCountries();
-        initializeStates();
-
+        initializeCountriesStates();
         initializePersons();
     }
 
     private void initializePersons() {
-        for (Integer i = 200; i < 400; i++) {
+        for (Integer i = 0; i < 1000; i++) {
             Person person = new Person(
                     "firstName" + i,
                     "lastName" + i,
                     i.toString()
             );
+            person.setSocialSecurityNumber("123456789");
+            person.setBirthDate(createBirthDate());
 
-            person.setStreet("100 Main St");
-            person.setCity("Charlotte");
-            person.setState(new State("NC"));
-            person.setCountry(new Country("US"));
-            person.setZipCode("28202");
-            person.setBirthDate(new Date());
+            Address address = new Address();
+            address.setStreet(i + " Main St");
+            if (i % 2 == 0) {
+                address.setCity("Charlotte");
+                Country country = new Country("US");
+                address.setCountry(country);
+                address.setState(new State("NC"));
+                address.setZipCode("28202");
+            } else {
+                address.setCity("Toronto");
+                Country country = new Country("CA");
+                address.setCountry(country);
+                address.setState(new State("ON"));
+                address.setZipCode("M4B 1B4");
+            }
+            person.setAddress(address);
 
             personDao.persist(person);
         }
     }
 
-    private void initializeStates() {
-        State state = new State("NC", "North Carolina");
-        genericDao.persist(state);
+    private void initializeCountriesStates() {
+        Country canada = new Country("CA", "Canada");
+        countryDao.persist(canada);
 
-        state = new State("VA", "Virginia");
-        genericDao.persist(state);
+        State state = new State("ON", "Ontario", canada);
+        stateDao.persist(state);
+
+        state = new State("QC", "Quebec", canada);
+        stateDao.persist(state);
+
+        state = new State("NS", "Nova Scotia", canada);
+        stateDao.persist(state);
+
+        state = new State("NL", "Newfoundland", canada);
+        stateDao.persist(state);
+
+        Country us = new Country("US", "United States");
+        countryDao.persist(us);
+
+        state = new State("NC", "North Carolina", us);
+        stateDao.persist(state);
+
+        state = new State("SC", "South Carolina", us);
+        stateDao.persist(state);
+
+        state = new State("VA", "Virginia", us);
+        stateDao.persist(state);
+
+        state = new State("WV", "West Virginia", us);
+        stateDao.persist(state);
     }
 
-    private void initializeCountries() {
-        Country country = new Country("US", "United States");
-        genericDao.persist(country);
+    public static Date createBirthDate() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.DAY_OF_MONTH, 29);
+        calendar.set(Calendar.MONTH, 1);
+        calendar.set(Calendar.YEAR, 1950);
 
-        country = new Country("CA", "Canada");
-        genericDao.persist(country);
+        return calendar.getTime();
     }
 }

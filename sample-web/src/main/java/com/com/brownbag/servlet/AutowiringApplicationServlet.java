@@ -1,3 +1,20 @@
+/*
+ * BROWN BAG CONFIDENTIAL
+ *
+ * Brown Bag Consulting LLC
+ * Copyright (c) 2011. All Rights Reserved.
+ *
+ * NOTICE:  All information contained herein is, and remains
+ * the property of Brown Bag Consulting LLC and its suppliers,
+ * if any.  The intellectual and technical concepts contained
+ * herein are proprietary to Brown Bag Consulting LLC
+ * and its suppliers and may be covered by U.S. and Foreign Patents,
+ * patents in process, and are protected by trade secret or copyright law.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Brown Bag Consulting LLC.
+ */
+
 package com.com.brownbag.servlet;
 
 import com.vaadin.Application;
@@ -29,12 +46,12 @@ import javax.servlet.http.HttpServletRequest;
  * <blockquote><pre>
  *  &lt;bean id="applicationServlet" class="org.springframework.web.servlet.mvc.ServletWrappingController"
  *     p:servletClass="com.com.brownbag.servlet.AutowiringApplicationServlet"&gt;
- *      &lt;property name="initParameters"&gt;
+ *      &lt;otherProperty name="initParameters"&gt;
  *          &lt;props&gt;
  *              &lt;prop key="application"&gt;some.spring.configured.Application&lt;/prop&gt;
  *              &lt;prop key="productionMode"&gt;true&lt;/prop&gt;
  *          &lt;/props&gt;
- *      &lt;/property&gt;
+ *      &lt;/otherProperty&gt;
  *  &lt;/bean&gt;
  * </pre></blockquote>
  *

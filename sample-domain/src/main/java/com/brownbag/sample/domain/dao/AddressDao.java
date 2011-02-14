@@ -14,14 +14,13 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Brown Bag Consulting LLC.
  */
+package com.brownbag.sample.domain.dao;
 
-package com.brownbag.sample.util;
+import com.brownbag.sample.domain.entity.Address;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-public class DefaultSystemProperties {
-
-    public void initialize() {
-        if (System.getProperty("DB") == null) {
-            System.setProperty("DB", "h2");
-        }
-    }
+@Repository
+@Transactional
+public class AddressDao extends GenericDao<Address, String> {
 }

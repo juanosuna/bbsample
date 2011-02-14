@@ -1,59 +1,61 @@
 /*
- * Copyright 2011 Brown Bag Consulting LLC
+ * BROWN BAG CONFIDENTIAL
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Brown Bag Consulting LLC
+ * Copyright (c) 2011. All Rights Reserved.
  *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * NOTICE:  All information contained herein is, and remains
+ * the property of Brown Bag Consulting LLC and its suppliers,
+ * if any.  The intellectual and technical concepts contained
+ * herein are proprietary to Brown Bag Consulting LLC
+ * and its suppliers and may be covered by U.S. and Foreign Patents,
+ * patents in process, and are protected by trade secret or copyright law.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Brown Bag Consulting LLC.
  */
+
 package com.brownbag.sample.domain.entity;
 
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.ForeignKey;
+import org.hibernate.annotations.Index;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
-/**
- * Entity Person
- */
+import static com.brownbag.sample.domain.entity.WritableEntity.SCHEMA;
+
 @Entity
-@Table(schema = WritableEntity.SCHEMA)
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "ReadOnly")
+@Table(schema = SCHEMA)
 public class Person extends WritableEntity {
 
-    private String firstName = "";
+    @NotNull
+    @Size(min = 1, max = 16)
+    private String firstName;
 
-    private String lastName = "";
+    @NotNull
+    @Size(min = 1, max = 16)
+    @Index(name = "IDX_PERSON_LAST_NAME")
+    private String lastName;
 
-    private Date birthDate = new Date();
+    @Past
+    private Date birthDate;
 
-    private String socialSecurityNumber = "";
+    @Pattern(regexp = "^\\d+$", message = "Must contain only 9 digits")
+    @Size(min = 9, max = 9)
+    private String socialSecurityNumber;
 
-    private String street = "";
-
-    private String city = "";
-
-    private String zipCode = "";
-
-    @ForeignKey(name = "FK_PERSON_STATE")
-    @ManyToOne
-    private State state;
-
-    @ForeignKey(name = "FK_PERSON_COUNTRY")
-    @ManyToOne
-    private Country country;
+    @Valid
+    @Index(name = "IDX_PERSON_ADDRESS")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ForeignKey(name = "FK_PERSON_ADDRESS")
+    private Address address;
 
     public Person() {
     }
@@ -96,51 +98,11 @@ public class Person extends WritableEntity {
         this.socialSecurityNumber = socialSecurityNumber;
     }
 
-    public String getStreet() {
-        return street;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getZipCode() {
-        return zipCode;
-    }
-
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
-    }
-
-    public State getState() {
-        return state;
-    }
-
-    public void setState(State state) {
-        this.state = state;
-    }
-
-    public Country getCountry() {
-        return country;
-    }
-
-    public void setCountry(Country country) {
-        this.country = country;
-    }
-
-    public String getCountryId() {
-        if (getCountry() == null) {
-            return "";
-        } else {
-            return getCountry().getId();
-        }
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }

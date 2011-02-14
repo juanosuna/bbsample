@@ -1,4 +1,5 @@
-<%--
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
   ~ BROWN BAG CONFIDENTIAL
   ~
   ~ Brown Bag Consulting LLC
@@ -13,10 +14,10 @@
   ~ Dissemination of this information or reproduction of this material
   ~ is strictly forbidden unless prior written permission is obtained
   ~ from Brown Bag Consulting LLC.
-  --%>
+  -->
 
-<html>
-<body>
-<h2>Hello World!</h2>
-</body>
-</html>
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 1.7.0//EN"
+        "http://google-web-toolkit.googlecode.com/svn/tags/1.7.0/distro-source/core/src/gwt-module.dtd">
+<module>
+    <inherits name="com.vaadin.terminal.gwt.DefaultWidgetSet"/>
+</module>

@@ -1,3 +1,20 @@
+<!--
+  ~ BROWN BAG CONFIDENTIAL
+  ~
+  ~ Brown Bag Consulting LLC
+  ~ Copyright (c) 2011. All Rights Reserved.
+  ~
+  ~ NOTICE:  All information contained herein is, and remains
+  ~ the property of Brown Bag Consulting LLC and its suppliers,
+  ~ if any.  The intellectual and technical concepts contained
+  ~ herein are proprietary to Brown Bag Consulting LLC
+  ~ and its suppliers and may be covered by U.S. and Foreign Patents,
+  ~ patents in process, and are protected by trade secret or copyright law.
+  ~ Dissemination of this information or reproduction of this material
+  ~ is strictly forbidden unless prior written permission is obtained
+  ~ from Brown Bag Consulting LLC.
+  -->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -62,16 +79,22 @@
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.vaadin.addon</groupId>
+            <artifactId>beanvalidation-addon</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.vaadin.addons</groupId>
+            <artifactId>pojo-container</artifactId>
+        </dependency>
+
         <!-- This is also used by gwt-maven-plugin to deduce GWT version number. -->
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
             <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.vaadin.addons.lazyquerycontainer</groupId>
-            <artifactId>vaadin-lazyquerycontainer</artifactId>
         </dependency>
 
         <dependency>
@@ -125,7 +148,9 @@
                     <execution>
                         <configuration>
                             <!-- if you don't specify any modules, the plugin will find them -->
-                            <!-- <modules> <module>com.brownbag.gwt.ColorPickerWidgetSet</module> </modules> -->
+                            <!--<modules>-->
+                                <!--<module>com.brownbag.sample.widgetset.SampleWidgetSet</module>-->
+                            <!--</modules>-->
                         </configuration>
                         <goals>
                             <goal>update-widgetset</goal>

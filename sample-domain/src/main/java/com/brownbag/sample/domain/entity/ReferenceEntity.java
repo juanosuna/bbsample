@@ -17,65 +17,73 @@
 
 package com.brownbag.sample.domain.entity;
 
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Version;
-import java.util.UUID;
 
 @MappedSuperclass
-public abstract class WritableEntity {
+public abstract class ReferenceEntity implements Comparable {
 
     private static final long serialVersionUID = 1L;
 
-    public static final String SCHEMA = "SAMPLE";
+    public static final String SCHEMA = WritableEntity.SCHEMA;
 
     @Id
-    @GeneratedValue
-    private Long id;
+    private String id;
 
-    private String uuid;
+    private String name;
 
-    @Version
-    private Integer version;
-
-    protected WritableEntity() {
-        uuid = UUID.randomUUID().toString();
+    protected ReferenceEntity() {
     }
 
-    public Long getId() {
+    protected ReferenceEntity(String id) {
+        this.id = id;
+    }
+
+    protected ReferenceEntity(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public String getUuid() {
-        return uuid;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public Integer getVersion() {
-        return version;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof WritableEntity)) return false;
+        if (!(o instanceof ReferenceEntity)) return false;
 
-        WritableEntity that = (WritableEntity) o;
+        ReferenceEntity that = (ReferenceEntity) o;
 
-        if (!getUuid().equals(that.getUuid())) return false;
+        if (!getId().equals(that.getId())) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return getUuid().hashCode();
+        return getId().hashCode();
     }
 
     @Override
     public String toString() {
-        return "WritableEntity{" +
-                "uuid=" + getUuid() +
-                '}';
+        return getId();
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return id.compareTo(((ReferenceEntity) o).id);
     }
 }
