@@ -39,7 +39,7 @@ public class State extends ReferenceEntity {
     @Index(name = "IDX_STATE_COUNTRY")
     @ForeignKey(name = "FK_STATE_COUNTRY")
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Country country;
 
     public State() {

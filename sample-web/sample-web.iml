@@ -41,7 +41,6 @@
       <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/target/sample-web" />
       <excludeFolder url="file://$MODULE_DIR$/target/surefire" />
-      <excludeFolder url="file://$MODULE_DIR$/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -82,7 +81,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context-support:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-test:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: com.vaadin:vaadin:6.5.0" level="project" />
+    <orderEntry type="library" name="Maven: com.vaadin:vaadin:6.5.1" level="project" />
     <orderEntry type="library" name="Maven: com.vaadin.addon:beanvalidation-addon:0.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.vaadin.addons:pojo-container:0.1.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.gwt:gwt-user:2.1.1" level="project" />

@@ -49,6 +49,12 @@ public class SampleFieldFactory extends DefaultFieldFactory {
                 textField.setNullRepresentation("");
                 textField.setNullSettingAllowed(false);
                 textField.setRequiredError("Value is required");
+                textField.setImmediate(true);
+            }
+            if (field instanceof AbstractField) {
+                AbstractField abstractField = (AbstractField) field;
+                abstractField.setRequiredError("Value is required");
+                abstractField.setImmediate(true);
             }
             field.setInvalidAllowed(true);
             fields.put(propertyId, field);
@@ -86,6 +92,7 @@ public class SampleFieldFactory extends DefaultFieldFactory {
         comboBox.setItemCaptionMode(Select.ITEM_CAPTION_MODE_PROPERTY);
         comboBox.setNullSelectionAllowed(true);
         comboBox.setItemCaptionPropertyId("name");
+        comboBox.setImmediate(true);
 
         return comboBox;
     }

@@ -35,7 +35,7 @@ import static com.brownbag.sample.domain.entity.WritableEntity.SCHEMA;
 @Table(schema = SCHEMA)
 public class Person extends WritableEntity {
 
-    @NotNull
+    @NotNull()
     @Size(min = 1, max = 16)
     private String firstName;
 

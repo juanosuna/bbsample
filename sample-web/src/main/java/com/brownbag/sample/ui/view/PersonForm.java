@@ -192,7 +192,7 @@ public class PersonForm extends Form {
         protected Field createFieldImpl(Item item, Object propertyId, Component uiContext) {
             if ("address.country".equals(propertyId)) {
                 ComboBox countryCombo = createReferenceCombo("Country", Country.class, countryDao.findAll());
-                countryCombo.addListener(Field.ValueChangeEvent.class, this, "countryChanged");
+                countryCombo.addListener(ValueChangeEvent.class, this, "countryChanged");
                 return countryCombo;
             } else if ("address.state".equals(propertyId)) {
                 stateCombo = new SampleFieldFactory().createReferenceCombo("State", State.class, new ArrayList());
@@ -202,16 +202,17 @@ public class PersonForm extends Form {
             }
         }
 
-        public void countryChanged(Field.ValueChangeEvent event) {
-            Country country = (Country) event.getProperty().getValue();
-            BeanItemContainer<State> container = (BeanItemContainer<State>) stateCombo.getContainerDataSource();
-            container.removeAllItems();
-            if (country != null) {
-                country = countryDao.find(country.getId());
-                List<State> states = stateDao.findByCountry(country);
-                for (State state : states) {
-                    container.addBean(state);
-                }
+        public void countryChanged(ValueChangeEvent event) {
+            Country newCountry = (Country) event.getProperty().getValue();
+            State selectedState = (State) stateCombo.getValue();
+            BeanItemContainer<State> stateContainer = (BeanItemContainer<State>) stateCombo.getContainerDataSource();
+            stateContainer.removeAllItems();
+            List<State> states = stateDao.findByCountry(newCountry);
+            for (State state : states) {
+                stateContainer.addBean(state);
+            }
+            if (newCountry != null && selectedState != null && !newCountry.equals(selectedState.getCountry())) {
+                stateCombo.select(stateCombo.getNullSelectionItemId());
             }
         }
 

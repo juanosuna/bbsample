@@ -163,7 +163,8 @@ public class SampleApplication extends Application {
         BeanItemContainer<State> container = (BeanItemContainer<State>) stateCombo.getContainerDataSource();
         container.removeAllItems();
 
-        stateCombo.setValue(null);
+        stateCombo.select(stateCombo.getNullSelectionItemId());
+
         if (country != null) {
             country = countryDao.find(country.getId());
             List<State> states = stateDao.findByCountry(country);
