@@ -17,27 +17,62 @@
 
 package com.brownbag.sample.domain.entity;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Version;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
+import org.hibernate.annotations.NaturalId;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.UUID;
 
 @MappedSuperclass
+@EntityListeners({WritableEntity.WritableEntityListener.class})
 public abstract class WritableEntity {
 
     private static final long serialVersionUID = 1L;
 
     public static final String SCHEMA = "SAMPLE";
+    public static final String SYSTEM_USER = "System";
+
+    private static final ThreadLocal<String> currentUser = new ThreadLocal<String>();
+
+    public static String getCurrentUser() {
+        if (currentUser.get() == null) {
+            return SYSTEM_USER;
+        } else {
+            return currentUser.get();
+        }
+    }
+
+    public static void setCurrentUser(String user) {
+        currentUser.set(user);
+    }
 
     @Id
     @GeneratedValue
     private Long id;
 
+    @NaturalId
+    @Column(unique = true, nullable = false, updatable = false)
     private String uuid;
 
     @Version
     private Integer version;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @NotNull
+    private Date lastModified;
+
+    @NotNull
+    private String lastModifiedBy;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @NotNull
+    private Date created;
+
+    @NotNull
+    private String createdBy;
 
     protected WritableEntity() {
         uuid = UUID.randomUUID().toString();
@@ -77,5 +112,22 @@ public abstract class WritableEntity {
         return "WritableEntity{" +
                 "uuid=" + getUuid() +
                 '}';
+    }
+
+    public static class WritableEntityListener {
+        @PrePersist
+        public void onPrePersist(WritableEntity writableEntity) {
+            writableEntity.created = new Date();
+            writableEntity.lastModified = writableEntity.created;
+
+            writableEntity.createdBy = getCurrentUser();
+            writableEntity.lastModifiedBy = writableEntity.createdBy;
+        }
+
+        @PreUpdate
+        public void onPreUpdate(WritableEntity writableEntity) {
+            writableEntity.lastModified = new Date();
+            writableEntity.lastModifiedBy = getCurrentUser();
+        }
     }
 }

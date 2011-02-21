@@ -34,6 +34,7 @@ import com.vaadin.data.util.POJOItem;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Runo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,6 +95,7 @@ public class SampleApplication extends Application {
     }
 
     private void initPanels() {
+
         queryPanel = createPanel(new HorizontalLayout());
         mainWindow.addComponent(queryPanel);
 
@@ -184,5 +186,13 @@ public class SampleApplication extends Application {
             personForm.setVisible(true);
         }
     }
+
+    @Override
+    public void terminalError(com.vaadin.terminal.Terminal.ErrorEvent event) {
+        if (event.getThrowable().getCause() instanceof AccessDeniedException) {
+            getMainWindow().showNotification("Access Denied", Window.Notification.TYPE_ERROR_MESSAGE);
+        }
+    }
+
 }
 

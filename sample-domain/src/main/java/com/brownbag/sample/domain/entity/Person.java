@@ -45,6 +45,7 @@ public class Person extends WritableEntity {
     private String lastName;
 
     @Past
+    @Temporal(TemporalType.DATE)
     private Date birthDate;
 
     @Pattern(regexp = "^\\d+$", message = "Must contain only 9 digits")

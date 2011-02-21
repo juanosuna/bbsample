@@ -20,6 +20,7 @@ package com.brownbag.sample.domain.dao;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -133,6 +134,7 @@ public class GenericDao<T, ID extends Serializable> {
         query.executeUpdate();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public T merge(T entity) {
         return getEntityManager().merge(entity);
     }

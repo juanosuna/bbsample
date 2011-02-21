@@ -22,6 +22,7 @@ import com.brownbag.sample.domain.entity.Person;
 import com.brownbag.sample.domain.entity.State;
 import com.brownbag.sample.domain.query.EntityQuery;
 import com.brownbag.sample.domain.query.PersonQuery;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

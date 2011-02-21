@@ -35,6 +35,8 @@ import com.vaadin.terminal.UserError;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import javax.validation.ConstraintViolation;
 import java.util.*;
