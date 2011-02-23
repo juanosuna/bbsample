@@ -61,8 +61,8 @@ public class TestInitializer {
     private void initializePersons() {
         for (Integer i = 0; i < 1000; i++) {
             Person person = new Person(
-                    "firstName" + i,
-                    "lastName" + i,
+                    "first" + i,
+                    "last" + i,
                     i.toString()
             );
             person.setSocialSecurityNumber("123456789");

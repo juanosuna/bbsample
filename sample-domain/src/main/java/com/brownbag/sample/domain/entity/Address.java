@@ -22,6 +22,7 @@ import com.brownbag.sample.validation.PatternDependencies;
 import com.brownbag.sample.validation.PatternIf;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.annotations.Index;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -37,10 +38,12 @@ import static com.brownbag.sample.domain.entity.WritableEntity.SCHEMA;
 public class Address extends WritableEntity {
 
     @NotNull
+    @NotBlank
     @Size(min = 1, max = 16)
     private String street;
 
     @NotNull
+    @NotBlank
     @Size(min = 1, max = 16)
     private String city;
 

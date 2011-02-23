@@ -52,12 +52,20 @@ public class EntityQuery {
         this.resultCount = resultCount;
     }
 
+    public void firstPage() {
+        firstResult = 0;
+    }
+
     public void nextPage() {
-        firstResult = Math.min(firstResult + pageSize, resultCount.intValue());
+        firstResult = Math.min(firstResult + pageSize, resultCount.intValue() - pageSize);
     }
 
     public void previousPage() {
         firstResult = Math.max(firstResult - pageSize, 0);
+    }
+
+    public void lastPage() {
+        firstResult = resultCount.intValue() - pageSize;
     }
 
     @Override

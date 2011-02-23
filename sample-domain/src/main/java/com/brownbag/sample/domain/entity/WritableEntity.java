@@ -17,9 +17,9 @@
 
 package com.brownbag.sample.domain.entity;
 
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.NaturalId;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -33,20 +33,17 @@ public abstract class WritableEntity {
     private static final long serialVersionUID = 1L;
 
     public static final String SCHEMA = "SAMPLE";
-    public static final String SYSTEM_USER = "System";
-
-    private static final ThreadLocal<String> currentUser = new ThreadLocal<String>();
+    public static final String SYSTEM_USER = "system";
 
     public static String getCurrentUser() {
-        if (currentUser.get() == null) {
-            return SYSTEM_USER;
+        if (SecurityContextHolder.getContext() != null && SecurityContextHolder.getContext().getAuthentication() != null
+                && SecurityContextHolder.getContext().getAuthentication().getPrincipal() != null) {
+            org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User)
+                    SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                    return user.getUsername();
         } else {
-            return currentUser.get();
+            return SYSTEM_USER;
         }
-    }
-
-    public static void setCurrentUser(String user) {
-        currentUser.set(user);
     }
 
     @Id
@@ -61,17 +58,17 @@ public abstract class WritableEntity {
     private Integer version;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @NotNull
+    @Column(nullable = false)
     private Date lastModified;
 
-    @NotNull
+    @Column(nullable = false)
     private String lastModifiedBy;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @NotNull
+    @Column(nullable = false)
     private Date created;
 
-    @NotNull
+    @Column(nullable = false)
     private String createdBy;
 
     protected WritableEntity() {
@@ -88,6 +85,38 @@ public abstract class WritableEntity {
 
     public Integer getVersion() {
         return version;
+    }
+
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
     @Override
@@ -112,6 +141,10 @@ public abstract class WritableEntity {
         return "WritableEntity{" +
                 "uuid=" + getUuid() +
                 '}';
+    }
+
+    public void updateLastModified() {
+        new WritableEntityListener().onPreUpdate(this);
     }
 
     public static class WritableEntityListener {

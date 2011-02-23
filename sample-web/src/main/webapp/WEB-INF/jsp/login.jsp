@@ -23,8 +23,9 @@
 </head>
 
 <body>
-<h1>Login</h1>
+<h2 align="center">Login</h2>
 
+<p align="center">Try admin/admin for write access or guest/guest for read-only access</p>
 <c:if test="${not empty param.login_error}">
       <span style="color: red; ">
         Your login attempt was not successful, try again.<br/><br/>
@@ -33,27 +34,25 @@
 </c:if>
 
 <form name="f" action="<c:url value='/j_spring_security_check'/>" method="POST">
-    <table>
+    <table align="center">
         <tr>
             <td><label for="j_username">User</label></td>
             <td><input type='text' id="j_username" name="j_username"
                        value='<c:if test="${not empty param.login_error}"><c:out value="${SPRING_SECURITY_LAST_USERNAME}"/></c:if>'/>
             </td>
+            <td align="left"></td>
         </tr>
         <tr>
             <td><label for="j_password">Password</label></td>
             <td><input type='password' id="j_password" name='j_password'></td>
         </tr>
         <tr>
-            <td><input type="checkbox" name="_spring_security_remember_me"></td>
-            <td>Don't ask for my password for two weeks</td>
+            <td align="right"><input type="checkbox" name="_spring_security_remember_me"></td>
+            <td align="left">remember for two weeks</td>
         </tr>
 
         <tr>
-            <td colspan='2'><input name="submit" type="submit"></td>
-        </tr>
-        <tr>
-            <td colspan='2'><input name="reset" type="reset"></td>
+            <td colspan='2'><input name="submit" type="submit" value="Login"></td>
         </tr>
     </table>
 </form>

@@ -60,8 +60,6 @@
         foreign key (COUNTRY) 
         references SAMPLE.COUNTRY;
 
-    create index IDX_PERSON_LAST_NAME on SAMPLE.PERSON (LAST_NAME);
-
     create index IDX_PERSON_ADDRESS on SAMPLE.PERSON (ADDRESS);
 
     alter table SAMPLE.PERSON 

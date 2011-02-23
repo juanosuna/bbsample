@@ -49,7 +49,7 @@
         <authentication-provider>
             <user-service>
                 <user name="admin" password="admin" authorities="ROLE_ADMIN, ROLE_USER"/>
-                <user name="juan" password="juan" authorities="ROLE_USER"/>
+                <user name="guest" password="guest" authorities="ROLE_USER"/>
             </user-service>
         </authentication-provider>
     </authentication-manager>

@@ -20,6 +20,7 @@ package com.brownbag.sample.ui.view;
 import com.brownbag.sample.domain.dao.CountryDao;
 import com.brownbag.sample.domain.dao.PersonDao;
 import com.brownbag.sample.domain.dao.StateDao;
+import com.brownbag.sample.domain.entity.Address;
 import com.brownbag.sample.domain.entity.Country;
 import com.brownbag.sample.domain.entity.Person;
 import com.brownbag.sample.domain.entity.State;
@@ -109,6 +110,22 @@ public class PersonForm extends Form {
         super.setItemDataSource(personItem, PROPERTIES);
     }
 
+    public void clear() {
+        setVisible(false);
+        setComponentError(null);
+        super.setItemDataSource(null, PROPERTIES);
+
+    }
+
+    public void create() {
+        setComponentError(null);
+        Person newPerson = new Person();
+        Address newAddress = new Address();
+        newPerson.setAddress(newAddress);
+        POJOItem<Person> personItem = new POJOItem<Person>(newPerson, PROPERTIES);
+        super.setItemDataSource(personItem, PROPERTIES);
+    }
+
     public void save() {
         try {
             commit();
@@ -120,11 +137,18 @@ public class PersonForm extends Form {
 
         Set<ConstraintViolation<Person>> constraintViolations = validate(person);
         if (isValid() && constraintViolations.isEmpty()) {
-            Person mergedPerson = personDao.merge(person);
-            load(mergedPerson);
-            personTable.search();
+            if (person.getId() != null) {
+                person.updateLastModified();
+                Person mergedPerson = personDao.merge(person);
+                load(mergedPerson);
+                personTable.search();
+            } else {
+                personDao.persist(person);
+                load(person);
+                personTable.search();
+            }
         }
-    }
+     }
 
     private Set<ConstraintViolation<Person>> validate(Person person) {
         Set<ConstraintViolation<Person>> constraintViolations = validation.validate(person);
@@ -148,7 +172,11 @@ public class PersonForm extends Form {
         discard();
         POJOItem<Person> personItem = (POJOItem<Person>) getItemDataSource();
         Person person = personItem.getBean();
-        load(person);
+        if (person.getId() == null) {
+            clear();
+        } else {
+            load(person);
+        }
     }
 
     private void initButtons() {

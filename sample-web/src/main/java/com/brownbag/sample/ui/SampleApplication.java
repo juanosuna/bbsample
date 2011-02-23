@@ -18,6 +18,7 @@
 package com.brownbag.sample.ui;
 
 import com.brownbag.sample.domain.dao.CountryDao;
+import com.brownbag.sample.domain.dao.PersonDao;
 import com.brownbag.sample.domain.dao.StateDao;
 import com.brownbag.sample.domain.entity.Country;
 import com.brownbag.sample.domain.entity.Person;
@@ -50,6 +51,9 @@ public class SampleApplication extends Application {
 
     @Autowired
     private PersonForm personForm;
+
+    @Autowired
+    private PersonDao personDao;
 
     @Autowired
     private CountryDao countryDao;
@@ -151,11 +155,23 @@ public class SampleApplication extends Application {
         Button searchButton = new Button("Search", personTable, "search");
         buttonPanel.addComponent(searchButton);
 
+        Button firstButton = new Button("First", personTable, "firstPage");
+        buttonPanel.addComponent(firstButton);
+
         Button previousButton = new Button("Previous", personTable, "previousPage");
         buttonPanel.addComponent(previousButton);
 
         Button nextButton = new Button("Next", personTable, "nextPage");
         buttonPanel.addComponent(nextButton);
+
+        Button lastButton = new Button("Last", personTable, "lastPage");
+        buttonPanel.addComponent(lastButton);
+
+        Button newButton = new Button("New", this, "create");
+        buttonPanel.addComponent(newButton);
+
+        Button deleteButton = new Button("Delete", this, "delete");
+        buttonPanel.addComponent(deleteButton);
     }
 
     // Listener Methods
@@ -185,6 +201,22 @@ public class SampleApplication extends Application {
             personForm.load(personItem.getBean());
             personForm.setVisible(true);
         }
+    }
+
+    public void delete() {
+        Object itemId = personTable.getValue();
+        if (itemId != null) {
+            personForm.clear();
+            POJOItem<Person> personItem = personTable.getContainerDataSource().getItem(itemId);
+            Person person = personItem.getBean();
+            personDao.delete(person);
+            personTable.search();
+        }
+    }
+
+    public void create() {
+        personForm.create();
+        personForm.setVisible(true);
     }
 
     @Override

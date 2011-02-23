@@ -20,6 +20,8 @@ package com.brownbag.sample.domain.entity;
 
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.annotations.Index;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -35,13 +37,14 @@ import static com.brownbag.sample.domain.entity.WritableEntity.SCHEMA;
 @Table(schema = SCHEMA)
 public class Person extends WritableEntity {
 
-    @NotNull()
+    @NotBlank
+    @NotNull
     @Size(min = 1, max = 16)
     private String firstName;
 
+    @NotBlank
     @NotNull
     @Size(min = 1, max = 16)
-    @Index(name = "IDX_PERSON_LAST_NAME")
     private String lastName;
 
     @Past
@@ -54,8 +57,8 @@ public class Person extends WritableEntity {
 
     @Valid
     @Index(name = "IDX_PERSON_ADDRESS")
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @ForeignKey(name = "FK_PERSON_ADDRESS")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Address address;
 
     public Person() {
@@ -83,6 +86,9 @@ public class Person extends WritableEntity {
         this.lastName = lastName;
     }
 
+    public String getFullName() {
+        return getLastName() + ", " + getFirstName();
+    }
     public Date getBirthDate() {
         return birthDate;
     }

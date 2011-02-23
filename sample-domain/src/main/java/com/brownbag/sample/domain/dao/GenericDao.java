@@ -62,6 +62,7 @@ public class GenericDao<T, ID extends Serializable> {
         return persistentClass;
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void remove(T entity) {
         getEntityManager().remove(entity);
     }
@@ -125,6 +126,7 @@ public class GenericDao<T, ID extends Serializable> {
         return (T) criteria.uniqueResult();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void delete(T entity) {
         Query query = getEntityManager().createQuery("delete from " + getPersistentClass().getSimpleName() + " c"
                 + " where c = :entity)");
@@ -139,10 +141,12 @@ public class GenericDao<T, ID extends Serializable> {
         return getEntityManager().merge(entity);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void persist(T entity) {
         getEntityManager().persist(entity);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void persist(Collection<T> entities) {
         for (T entity : entities) {
             persist(entity);

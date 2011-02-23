@@ -21,11 +21,14 @@ import com.brownbag.sample.domain.dao.PersonDao;
 import com.brownbag.sample.domain.entity.Person;
 import com.brownbag.sample.domain.query.EntityQuery;
 import com.brownbag.sample.domain.query.PersonQuery;
+import com.vaadin.data.Property;
 import com.vaadin.data.util.POJOContainer;
 import com.vaadin.ui.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,8 +40,10 @@ import java.util.List;
 @Scope("session")
 public class PersonTable extends Table {
 
-    public static final String[] FIELDS = new String[]{"id", "firstName", "lastName", "address.state", "address.country"};
-    public static final String[] LABELS = new String[]{"Person Id", "First Name", "Last Name", "State", "Country"};
+    public static final String[] FIELDS = new String[]{"id", "fullName", "address.state", "address.country",
+            "lastModified", "lastModifiedBy"};
+    public static final String[] LABELS = new String[]{"Id", "Name", "State", "Country",
+            "Last Modified", "Modified By"};
 
     @Autowired
     private PersonQuery personQuery;
@@ -76,8 +81,24 @@ public class PersonTable extends Table {
         }
     }
 
+    @Override
+    protected String formatPropertyValue(Object rowId, Object colId, Property property) {
+        // Format by property type
+        if (property.getType() == Date.class) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+            return dateFormat.format((Date) property.getValue());
+        }
+
+        return super.formatPropertyValue(rowId, colId, property);
+    }
+
     public void search() {
         personQuery.setFirstResult(0);
+        runQuery();
+    }
+
+    public void firstPage() {
+        personQuery.firstPage();
         runQuery();
     }
 
@@ -88,6 +109,11 @@ public class PersonTable extends Table {
 
     public void nextPage() {
         personQuery.nextPage();
+        runQuery();
+    }
+
+    public void lastPage() {
+        personQuery.lastPage();
         runQuery();
     }
 
