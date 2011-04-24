@@ -52,7 +52,7 @@ public class PersonTable extends Table {
     private PersonDao personDao;
 
     public PersonTable() {
-        super("Person Results", new POJOContainer<Person>(Person.class, FIELDS));
+        super("Select Person to Edit", new POJOContainer<Person>(Person.class, FIELDS));
         setPageLength(10);
         setSelectable(true);
         setImmediate(true);

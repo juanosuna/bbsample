@@ -12,11 +12,6 @@
         <webroots>
           <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
         </webroots>
-        <sourceRoots>
-          <root url="file://$MODULE_DIR$/src/main/java" />
-          <root url="file://$MODULE_DIR$/src/main/resources" />
-          <root url="file://$MODULE_DIR$/target/generated-sources/annotations" />
-        </sourceRoots>
       </configuration>
     </facet>
     <facet type="Spring" name="Spring">
@@ -27,7 +22,7 @@
         <setting name="compilerMaxHeapSize" value="128" />
         <setting name="gwtScriptOutputStyle" value="DETAILED" />
         <setting name="gwtSdkType" value="maven" />
-        <setting name="gwtSdkUrl" value="file://$MAVEN_REPOSITORY$/com/google/gwt/gwt-dev/2.1.1/" />
+        <setting name="gwtSdkUrl" value="file://$MAVEN_REPOSITORY$/com/google/gwt/gwt-dev/2.2.0/" />
         <setting name="webFacet" value="Web" />
       </configuration>
     </facet>
@@ -45,6 +40,7 @@
       <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/target/sample-web" />
       <excludeFolder url="file://$MODULE_DIR$/target/surefire" />
+      <excludeFolder url="file://$MODULE_DIR$/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -63,7 +59,7 @@
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjrt:1.6.10" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-web:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:3.6.1.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:3.6.3.Final" level="project" />
     <orderEntry type="library" name="Maven: antlr:antlr:2.7.6" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.1" level="project" />
     <orderEntry type="library" name="Maven: dom4j:dom4j:1.6.1" level="project" />
@@ -71,18 +67,18 @@
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" level="project" />
     <orderEntry type="library" name="Maven: javax.transaction:jta:1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.hibernate:hibernate-entitymanager:3.6.1.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-entitymanager:3.6.3.Final" level="project" />
     <orderEntry type="library" name="Maven: cglib:cglib:2.2" level="project" />
     <orderEntry type="library" name="Maven: asm:asm:3.1" level="project" />
     <orderEntry type="library" name="Maven: javassist:javassist:3.12.0.GA" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-validator:4.1.0.Final" level="project" />
     <orderEntry type="library" name="Maven: javax.validation:validation-api:1.0.0.GA" level="project" />
-    <orderEntry type="library" name="Maven: org.hibernate:hibernate-ehcache:3.6.1.Final" level="project" />
-    <orderEntry type="library" name="Maven: net.sf.ehcache:ehcache-core:2.3.1" level="project" />
-    <orderEntry type="library" name="Maven: net.sf.ehcache:ehcache-terracotta:2.3.1" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-ehcache:3.6.3.Final" level="project" />
+    <orderEntry type="library" name="Maven: net.sf.ehcache:ehcache-core:2.4.1" level="project" />
+    <orderEntry type="library" name="Maven: net.sf.ehcache:ehcache-terracotta:2.4.1" level="project" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.16" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-log4j12:1.6.1" level="project" />
-    <orderEntry type="library" name="Maven: com.h2database:h2:1.3.149" level="project" />
+    <orderEntry type="library" name="Maven: com.h2database:h2:1.3.154" level="project" />
     <orderEntry type="library" name="Maven: commons-beanutils:commons-beanutils:1.8.3" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context-support:3.0.5.RELEASE" level="project" />
@@ -90,14 +86,14 @@
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-acl:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-config:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.6.10" level="project" />
-    <orderEntry type="library" name="Maven: com.vaadin:vaadin:6.5.1" level="project" />
+    <orderEntry type="library" name="Maven: com.vaadin:vaadin:6.5.6" level="project" />
     <orderEntry type="library" name="Maven: com.vaadin.addon:beanvalidation-addon:0.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.vaadin.addons:pojo-container:0.1.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.geronimo.specs:geronimo-servlet_2.5_spec:1.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.geronimo.specs:geronimo-jsp_2.1_spec:1.0.1" level="project" />
     <orderEntry type="library" name="Maven: javax.servlet:jstl:1.2" level="project" />
     <orderEntry type="library" name="Maven: taglibs:standard:1.1.2" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.gwt:gwt-user:2.1.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.gwt:gwt-user:2.2.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.2" level="project" />
   </component>
 </module>

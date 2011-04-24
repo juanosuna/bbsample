@@ -32,7 +32,7 @@
                     default-target-url="/app" always-use-default-target="true"/>
         <http-basic/>
         <logout logout-url="/mvc/login.do" invalidate-session="true" logout-success-url="/mvc/login.do" delete-cookies="JSESSIONID"/>
-        <remember-me/>
+        <remember-me data-source-ref="developmentDataSource"/>
 
         <session-management invalid-session-url="/mvc/login.do"/>
         <session-management>
