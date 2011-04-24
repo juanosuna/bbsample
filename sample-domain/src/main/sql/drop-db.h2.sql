@@ -1,1 +1,3 @@
-DROP SCHEMA SAMPLE
+DROP SCHEMA SAMPLE;
+DROP TABLE persistent_logins;
+
